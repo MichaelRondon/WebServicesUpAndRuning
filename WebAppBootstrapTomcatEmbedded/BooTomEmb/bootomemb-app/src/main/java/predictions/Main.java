@@ -3,8 +3,8 @@ package predictions;
 
 import java.util.Optional;
 import org.apache.catalina.Context;
-import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.startup.Tomcat;
+import predictions.predictions2.PredictionsServlet;
 
 public class Main {
     
@@ -18,8 +18,10 @@ public class Main {
         tomcat.getHost().setAppBase(appBase);
         Context context = tomcat.addWebapp(contextPath, appBase);
         tomcat.addServlet(context, "default_", new MyServlet());
+        tomcat.addServlet(context, "predictions2", new PredictionsServlet());
 
         context.addServletMapping("/predictions", "default_");
+        context.addServletMapping("/predictions2/*", "predictions2");
         context.addWelcomeFile("predictions.jsp");
         tomcat.start();
         tomcat.getServer().await();
